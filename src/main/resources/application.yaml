@@ -1,0 +1,33 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: cinema_ciencias_auth_service
+  config:
+    import: "optional:configserver:http://localhost:8888"
+
+  datasource:
+    url: jdbc:postgresql://localhost:5433/cinema_auth_db
+    username: postgres
+    password: ItsAndru0!
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+# cinema.security.jwtSecret / jwtExpirationMs viven en el Config Server
+# (config-service: shared-config/application.yml), compartidos con el Gateway.
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+
+eureka:
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+    prefer-ip-address: true
